@@ -1,6 +1,9 @@
 import {Animated, Pressable, StyleSheet, Text, View, Easing} from 'react-native'
-import {colors} from '../../../config/theme/theme'
 import {useAnimation} from '../../hooks/useAnimation'
+import {useContext} from 'react'
+import {ThemeContext} from '../../context/ThemeContext'
+import {CustomView} from '../../components/ui/customView'
+import {Button} from '../../components/ui/Button'
 
 export const Animation101Screen = () => {
     const {
@@ -11,11 +14,16 @@ export const Animation101Screen = () => {
         startMovingTopPosition,
     } = useAnimation()
 
+    const {colors} = useContext(ThemeContext)
+
     return (
-        <View style={styles.container}>
+        <CustomView style={styles.container}>
             <Animated.View
                 style={[
                     styles.purpleBox,
+                    {
+                        backgroundColor: colors.primary,
+                    },
                     {
                         opacity: animatedOpacity,
                         transform: [
@@ -26,22 +34,22 @@ export const Animation101Screen = () => {
                     },
                 ]}
             />
-            <Pressable
+            <Button
+                text="FadeIn"
                 onPress={() => {
                     fadeIn({})
                     startMovingTopPosition({
                         initialPosition: -100,
                         easing: Easing.elastic(1),
-                        duration: 750
+                        duration: 750,
                     })
                 }}
-                style={{marginTop: 10}}>
-                <Text>FadeIn</Text>
-            </Pressable>
-            <Pressable onPress={() => fadeIOut({})} style={{marginTop: 10}}>
-                <Text>FadeOut</Text>
-            </Pressable>
-        </View>
+                styles={{marginTop: 10}}></Button>
+            <Button
+                text="FadeOut"
+                onPress={() => fadeIOut({})}
+                styles={{marginTop: 10}}></Button>
+        </CustomView>
     )
 }
 
@@ -52,7 +60,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     purpleBox: {
-        backgroundColor: colors.primary,
         width: 150,
         height: 150,
     },
